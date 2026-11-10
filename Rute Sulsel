@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perbandingan Jarak Sulawesi Selatan</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #eef3f8;
+    margin: 0;
+    padding: 20px 14px;
+    color: #263445;
+}
+
+.container {
+    max-width: 480px;
+    margin: 25px auto;
+    background: white;
+    padding: 24px;
+    border-radius: 15px;
+    box-shadow: 0 4px 18px #00000012;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+header h1 {
+    color: #174b7a;
+    font-size: 25px;
+}
+
+header p {
+    color: #777;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+h3 {
+    color: #174b7a;
+    font-size: 17px;
+    margin-top: 22px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 14px 0 7px;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccd5df;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #1769aa;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 23px;
+    border: none;
+    border-radius: 8px;
+    background: #1769aa;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #10558d;
+}
+
+#hasil {
+    display: none;
+    background: #eaf5ff;
+    padding: 17px;
+    margin-top: 20px;
+    border-radius: 9px;
+    text-align: center;
+    line-height: 1.8;
+}
+
+#hasil strong {
+    color: #137a4b;
+}
+
+.anggota {
+    border-top: 1px solid #ddd;
+    margin-top: 30px;
+    padding-top: 18px;
+    text-align: center;
+}
+
+.anggota h3 {
+    margin-top: 5px;
+}
+
+.anggota p {
+    font-size: 14px;
+    margin: 9px;
+}
+
+footer {
+    text-align: center;
+    font-size: 12px;
+    color: #888;
+    margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>Perbandingan Jarak Kota</h1>
+    <p>
+        Wilayah Sulawesi Selatan<br>
+        Tentukan daerah mana yang lebih jauh
+        dari kota asal.
+    </p>
+</header>
+
+<h3>Kota Asal</h3>
+
+<label for="asal">Masukkan Nama Kota Asal</label>
+<input
+    type="text"
+    id="asal"
+    placeholder="Contoh: Bantaeng"
+>
+
+<h3>Kota Tujuan Pertama</h3>
+
+<label for="tujuan1">Masukkan Kota Tujuan 1</label>
+<input
+    type="text"
+    id="tujuan1"
+    placeholder="Contoh: Makassar"
+>
+
+<label for="jarak1">Jarak dari Kota Asal (km)</label>
+<input
+    type="number"
+    id="jarak1"
+    placeholder="Masukkan jarak dalam km"
+    min="0"
+    step="any"
+>
+
+<h3>Kota Tujuan Kedua</h3>
+
+<label for="tujuan2">Masukkan Kota Tujuan 2</label>
+<input
+    type="text"
+    id="tujuan2"
+    placeholder="Contoh: Bulukumba"
+>
+
+<label for="jarak2">Jarak dari Kota Asal (km)</label>
+<input
+    type="number"
+    id="jarak2"
+    placeholder="Masukkan jarak dalam km"
+    min="0"
+    step="any"
+>
+
+<button onclick="bandingkan()">
+    Bandingkan Jarak
+</button>
+
+<div id="hasil" aria-live="polite"></div>
+
+<div class="anggota">
+    <h3>Dibuat Oleh</h3>
+    <p>Muh Ahyar Arifin</p>
+    <p>Anugrah Salzabil</p>
+</div>
+
+<footer>
+    Program Perbandingan Jarak Antar Daerah
+    <br>
+    Sulawesi Selatan
+</footer>
+
+</div>
+
+<script>
+
+function bandingkan() {
+
+    let asal = document.getElementById("asal").value.trim();
+    let tujuan1 = document.getElementById("tujuan1").value.trim();
+    let tujuan2 = document.getElementById("tujuan2").value.trim();
+
+    let jarak_kota1 = parseFloat(
+        document.getElementById("jarak1").value
+    );
+
+    let jarak_kota2 = parseFloat(
+        document.getElementById("jarak2").value
+    );
+
+    let hasil = document.getElementById("hasil");
+
+    hasil.style.display = "block";
+
+    if (
+        asal === "" ||
+        tujuan1 === "" ||
+        tujuan2 === "" ||
+        !Number.isFinite(jarak_kota1) ||
+        !Number.isFinite(jarak_kota2) ||
+        jarak_kota1 < 0 ||
+        jarak_kota2 < 0
+    ) {
+
+        hasil.textContent =
+            "Silakan lengkapi semua data dengan benar.";
+
+        return;
+    }
+
+    if (
+        asal.toLowerCase() === tujuan1.toLowerCase() ||
+        asal.toLowerCase() === tujuan2.toLowerCase() ||
+        tujuan1.toLowerCase() === tujuan2.toLowerCase()
+    ) {
+
+        hasil.textContent =
+            "Nama kota asal dan tujuan harus berbeda.";
+
+        return;
+    }
+
+    // Membandingkan jarak kedua kota
+
+    if (jarak_kota1 > jarak_kota2) {
+
+        hasil.innerHTML =
+            "<strong>" + tujuan1 +
+            " lebih jauh dari " + asal + ".</strong><br>" +
+            "Jarak: " + jarak_kota1 + " km";
+
+    }
+
+    else if (jarak_kota2 > jarak_kota1) {
+
+        hasil.innerHTML =
+            "<strong>" + tujuan2 +
+            " lebih jauh dari " + asal + ".</strong><br>" +
+            "Jarak: " + jarak_kota2 + " km";
+
+    }
+
+    else {
+
+        hasil.innerHTML =
+            "<strong>Kedua kota memiliki jarak yang sama.</strong><br>" +
+            "Jarak: " + jarak_kota1 + " km";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
